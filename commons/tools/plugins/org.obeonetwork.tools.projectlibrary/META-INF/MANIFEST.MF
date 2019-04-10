@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.cdo,
  fr.obeo.dsl.viewpoint.collab,
  org.obeonetwork.dsl.technicalid,
- org.obeonetwork.dsl.database
+ org.obeonetwork.dsl.database,
+ org.obeonetwork.utils.sirius;bundle-version="11.0.0"
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
