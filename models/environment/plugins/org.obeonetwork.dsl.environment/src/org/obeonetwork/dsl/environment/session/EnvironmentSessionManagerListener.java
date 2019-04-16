@@ -1,15 +1,11 @@
 package org.obeonetwork.dsl.environment.session;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -22,12 +18,11 @@ import org.eclipse.sirius.viewpoint.DAnalysis;
 import org.eclipse.sirius.viewpoint.ViewpointPackage;
 import org.eclipse.sirius.viewpoint.description.DAnnotationEntry;
 import org.eclipse.sirius.viewpoint.description.DescriptionFactory;
+import org.obeonetwork.dsl.environment.util.ProvidedModelsService;
 import org.obeonetwork.utils.sirius.session.SessionUtils;
 
 public class EnvironmentSessionManagerListener extends Stub {
 	
-	private static final String PROVIDED_ENVIRONMENT_MODEL_EXTENSION_ID = "org.obeonetwork.dsl.environment.providedEnvironmentModel";
-
 	private static final String PROVIDED_ENVIRONMENT_MODEL_EXTENSION_URI_ATTRIBUTE = "uri";
 
 	private static final String PROVIDED_ENVIRONMENT_MODEL_EXTENSION_PROPERTY_ATTRIBUTE = "priority";
@@ -77,12 +72,8 @@ public class EnvironmentSessionManagerListener extends Stub {
 
 	private void addDefaultEnvironmentResourceToSemanticResource(Session session) {
 		// Read Extension "org.obeonetwork.dsl.environment.providedEnvironmentModel"
-		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(PROVIDED_ENVIRONMENT_MODEL_EXTENSION_ID).getExtensions();
-		List<IConfigurationElement> configElements = Arrays.stream(extensions)
-				.map(IExtension::getConfigurationElements)
-				.flatMap(Arrays::stream)
-				.sorted(configElementComparator)
-				.collect(Collectors.toList());
+		List<IConfigurationElement> configElements = ProvidedModelsService.getProvidedEnvironment();
+		configElements.sort(configElementComparator);
 		
 		if (!configElements.isEmpty()) {
 			Collections.sort(configElements, this.configElementComparator);

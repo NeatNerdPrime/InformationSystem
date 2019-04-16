@@ -27,7 +27,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.dsl.environment.Environment;
-import org.obeonetwork.dsl.is.design.service.ProvidedModelsService;
+import org.obeonetwork.dsl.environment.util.ProvidedModelsService;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
 import org.eclipse.sirius.ui.business.api.session.SessionEditorInput;
