@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Information System Designer" uid="org.obeonetwork.is.designer.branding.product" id="org.obeonetwork.is.designer.branding.product" application="org.eclipse.ui.ide.workbench" version="5.1.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Information System Designer" uid="org.obeonetwork.is.designer.branding.product" id="org.obeonetwork.is.designer.branding.product" application="org.eclipse.ui.ide.workbench" version="5.1.2.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.gif"/>
       <text>
          Information System Designer
 
-Version  5.1.1
+Version  5.1.2
 
 
 Copyright Obeo, Thales, Eclipse contributors and others 2000, 2025.  All rights reserved.
@@ -145,7 +145,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="org.obeonetwork.is.designer.product.feature" installMode="root"/>
       
       <feature id="fr.obeo.dsl.designer.gen.html.feature"/>
-      <feature id="org.eclipse.acceleo.aql.feature"/>
+      <feature id="org.eclipse.acceleo.query"/>
       <feature id="org.eclipse.sirius.specifier"/>
       <feature id="org.eclipse.amalgam.discovery"/>
       <feature id="org.eclipse.amalgam.explorer.contextual"/>
@@ -186,6 +186,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="org.eclipse.sirius.properties.feature"/>
       <feature id="org.eclipse.sirius.properties.feature.source"/>
       <feature id="org.eclipse.sirius.runtime"/>
+      <feature id="org.eclipse.sirius.runtime.acceleo"/>
+      <feature id="org.eclipse.sirius.runtime.acceleo.source"/>
       <feature id="org.eclipse.sirius.runtime.aql"/>
       <feature id="org.eclipse.sirius.runtime.aql.source"/>
       <feature id="org.eclipse.sirius.runtime.ide.eef"/>
