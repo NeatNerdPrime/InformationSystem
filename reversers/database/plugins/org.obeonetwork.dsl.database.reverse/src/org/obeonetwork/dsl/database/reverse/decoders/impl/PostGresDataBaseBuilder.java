@@ -15,6 +15,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
@@ -50,12 +56,12 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 
 	@Override
 	protected String getTypesLibraryUriPathmap() {
-		return TypesLibraryUtil.POSTGRES9_PATHMAP;
+		return TypesLibraryUtil.POSTGRES_PATHMAP;
 	}
 
 	@Override
 	protected String getTypesLibraryFileName() {
-		return TypesLibraryUtil.POSTGRES9_FILENAME;
+		return TypesLibraryUtil.POSTGRES_FILENAME;
 	}
 
 	@Override
@@ -84,7 +90,27 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 		buildSequences(tableContainer);
 	}
 
-	private void buildSequences(TableContainer owner) {
+	private void buildSequences(TableContainer tableContainer) {
+		
+		// Parse the default values of all the columns to identify the links between columns and sequences
+		Map<String, List<Column>> linkedSequenceColumns = new HashMap();
+		
+		tableContainer.getTables().stream()
+		.filter(Table.class::isInstance)
+		.map(Table.class::cast).flatMap(t -> t.getColumns().stream())
+		.forEach(c -> {
+			String sequenceName = getSequenceNameFromDefaultValue(c);
+			if(sequenceName != null) {
+				List<Column> linkedColumns = linkedSequenceColumns.get(sequenceName);
+				if(linkedColumns == null) {
+					linkedColumns = new ArrayList<>();
+					linkedSequenceColumns.put(sequenceName, linkedColumns);
+				}
+				linkedColumns.add(c);
+			}
+		});
+		
+		// Request the distant database to get the sequences of the current schema
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -92,7 +118,7 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 					
 			rs = executeQuery(pstmt);
 			while (rs.next()) {
-				String name = rs.getString(1);
+				String sequenceName = rs.getString(1);
 				BigInteger increment = getBigIntValueForColumn(rs, 2);
 				BigInteger minValue = getBigIntValueForColumn(rs, 3);
 				BigInteger maxValue = getBigIntValueForColumn(rs, 4); 
@@ -104,7 +130,7 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 				
 				// Retrieve CACHE value
 				BigInteger cacheValue = null;
-				PreparedStatement pstmtCache = builder.buildSequenceCacheValueStatement(schemaName, name);
+				PreparedStatement pstmtCache = builder.buildSequenceCacheValueStatement(schemaName, sequenceName);
 							
 				ResultSet rsCache = executeQuery(pstmtCache);
 				if (rsCache.next()) {
@@ -113,23 +139,25 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 				JdbcUtils.closeStatement(pstmtCache);
 				JdbcUtils.closeResultSet(rsCache);
 				
-				Sequence sequence = CreationUtils.createSequence(owner, name,
-						increment, minValue, maxValue, start, cycle, cacheValue);
+				Sequence sequence = CreationUtils.createSequence(tableContainer, sequenceName, increment, minValue, maxValue, start, cycle, cacheValue);
 				sequence.setComments(comment);
-				// Look for a table that could correspond to the sequence
-				if (name.endsWith("_seq")) {
-					String tableName = name.substring(0,
-							name.length() - "_seq".length());
+				// Look for a table that could correspond to the sequence based on its name
+				if (sequenceName.endsWith("_seq")) {
+					String tableName = sequenceName.substring(0, sequenceName.length() - "_seq".length());
 					AbstractTable abstractTable = queries.getTable(tableName);
 					if (abstractTable != null && abstractTable instanceof Table) {
 						Table table = (Table) abstractTable;
-						if (table.getPrimaryKey() != null
-								&& table.getPrimaryKey().getColumns().size() == 1) {
-							Column column = table.getPrimaryKey().getColumns()
-									.get(0);
+						if (table.getPrimaryKey() != null && table.getPrimaryKey().getColumns().size() == 1) {
+							Column column = table.getPrimaryKey().getColumns().get(0);
 							column.setSequence(sequence);
 						}
 					}
+				}
+				// Link the columns referencing the sequence in their default value to the sequence
+				if(linkedSequenceColumns.get(sequenceName) != null) {
+					linkedSequenceColumns.get(sequenceName).forEach(column -> {
+						column.setSequence(sequence);
+					});
 				}
 			}
 		} catch (Exception ex) {
@@ -139,6 +167,24 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 			JdbcUtils.closeResultSet(rs);
 		}
 
+	}
+	
+	private String getSequenceNameFromDefaultValue(Column column) {
+		String sequenceName = null;
+		
+		String defaultValue = column.getDefaultValue();
+		// Pattern matching expressions such as "nextval('schemaName.sequenceName'::regclass)"
+		// In this example, first group matches "schemaName.sequenceName"
+		Pattern p = Pattern.compile("nextval\\('([^']*)'[^\\)]*\\)");
+		Matcher matcher = p.matcher(defaultValue);
+		if(matcher.find()) {
+			sequenceName = matcher.group(1);
+			if(sequenceName.contains(".")) {
+				sequenceName = sequenceName.substring(sequenceName.indexOf('.') + 1);
+			}
+		}
+		
+		return sequenceName;
 	}
 	
 	@Override
@@ -199,15 +245,4 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 		return viewQuery;
 	}
 	
-	private class PostgreSQLConstraint {
-		PostgreSQLConstraint(String tableName, String name, String expression) {
-			this.tableName = tableName;
-			this.name = name;
-			this.expression = expression;
-		}
-
-		String tableName;
-		String name;
-		String expression;
-	}
 }

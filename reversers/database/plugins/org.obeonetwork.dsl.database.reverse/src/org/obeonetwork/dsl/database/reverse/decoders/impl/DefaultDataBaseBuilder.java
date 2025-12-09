@@ -253,8 +253,7 @@ public class DefaultDataBaseBuilder extends AbstractDataBaseBuilder {
 		TypeInstance typeInstance = specificCreateTypeInstance(nativeTypesLibrary, columnType, columnSize, decimalDigits);
 		
 		if (typeInstance == null) {
-			typeInstance = createTypeInstance(nativeTypesLibrary, columnType, columnSize,
-					decimalDigits);
+			typeInstance = createTypeInstance(nativeTypesLibrary, columnType, columnSize, decimalDigits);
 		}
 		column.setType(typeInstance);
 
