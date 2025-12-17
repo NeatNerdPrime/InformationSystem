@@ -148,10 +148,6 @@ public class DatabaseGen extends SQLGenerator {
     		}
     		
     		folderName = database.getName();
-    		if(database.getSchemas().size()>0){
-    			Schema schema = database.getSchemas().get(0);
-    			folderName = schema.getName();
-    		}
     		folderName += "-";
     	}    	
     	java.sql.Timestamp timeStampDate = new Timestamp(System.currentTimeMillis()); 
