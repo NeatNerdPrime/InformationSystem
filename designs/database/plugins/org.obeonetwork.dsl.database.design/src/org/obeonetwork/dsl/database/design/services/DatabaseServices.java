@@ -145,6 +145,7 @@ public class DatabaseServices {
 			for (Column column : (copiedTable).getColumns()) {
 				((TypeInstance) column.getType()).setNativeType(null);
 			}
+			copiedTable.getForeignKeys().clear();
 		}
 	}
 
