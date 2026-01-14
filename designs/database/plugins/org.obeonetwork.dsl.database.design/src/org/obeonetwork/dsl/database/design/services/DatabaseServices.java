@@ -142,9 +142,14 @@ public class DatabaseServices {
 	public void pasteTableToTableContainer(TableContainer tableContainer, Table copiedTable) {
 		databaseGenericCopy(tableContainer, copiedTable);
 		if (isTableFromOtherDatabaseType(copiedTable,  tableContainer)) {
+			//clean type of columns
 			for (Column column : (copiedTable).getColumns()) {
 				((TypeInstance) column.getType()).setNativeType(null);
 			}
+			//remove indexes that match with foreign key
+			copiedTable.getIndexes().removeIf(index -> copiedTable.getForeignKeys().stream().map(NamedElement::getName)
+					.anyMatch(fkName -> fkName.equals(index.getName())));
+			//clean all foreign keys
 			copiedTable.getForeignKeys().clear();
 		}
 	}
