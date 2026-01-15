@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,8 +49,9 @@ import org.obeonetwork.dsl.database.DatabaseFactory;
 import org.obeonetwork.dsl.database.DatabasePackage;
 import org.obeonetwork.dsl.database.ForeignKey;
 import org.obeonetwork.dsl.database.ForeignKeyElement;
+import org.obeonetwork.dsl.database.Index;
+import org.obeonetwork.dsl.database.IndexElement;
 import org.obeonetwork.dsl.database.NamedElement;
-import org.obeonetwork.dsl.database.Schema;
 import org.obeonetwork.dsl.database.Sequence;
 import org.obeonetwork.dsl.database.Table;
 import org.obeonetwork.dsl.database.TableContainer;
@@ -142,13 +142,23 @@ public class DatabaseServices {
 	public void pasteTableToTableContainer(TableContainer tableContainer, Table copiedTable) {
 		databaseGenericCopy(tableContainer, copiedTable);
 		if (isTableFromOtherDatabaseType(copiedTable,  tableContainer)) {
+			
 			//clean type of columns
 			for (Column column : (copiedTable).getColumns()) {
 				((TypeInstance) column.getType()).setNativeType(null);
 			}
-			//remove indexes that match with foreign key
-			copiedTable.getIndexes().removeIf(index -> copiedTable.getForeignKeys().stream().map(NamedElement::getName)
-					.anyMatch(fkName -> fkName.equals(index.getName())));
+			
+			//remove indexes and associated columns that match with foreign key
+			List<Index> indexesToDelete = new ArrayList<>();
+			for (Index index : copiedTable.getIndexes()) {
+				if ( copiedTable.getForeignKeys().stream().map(NamedElement::getName)
+					.anyMatch(fkName -> fkName.equals(index.getName()))) {
+					copiedTable.getColumns().removeAll(index.getElements().stream().map(IndexElement::getColumn).toList());
+					indexesToDelete.add(index);
+				}
+			}
+			copiedTable.getIndexes().removeAll(indexesToDelete);
+			
 			//clean all foreign keys
 			copiedTable.getForeignKeys().clear();
 		}
