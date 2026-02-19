@@ -16,7 +16,6 @@ import static java.util.stream.Collectors.toSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -109,24 +108,11 @@ public class CinematicBindingServices {
 		return null;
 	}
 
-	public String getGenericLabel(EObject eObject) {
+	private String getGenericLabel(EObject eObject) {
 		if (eObject == null) {
 			return "";
 		}
 		return aflp.getText(eObject);
-	}
-
-	public BindingInfo createCinematicBindingInfo(AbstractViewElement viewElement, EObject boundElement) {
-		if (boundElement instanceof BoundableElement) {
-			BoundableElement target = (BoundableElement) boundElement;
-			BindingRegistry bindingRegistry = getGlobalBindingRegistry(viewElement);
-			BindingInfo newBindingInfo = EnvironmentFactory.eINSTANCE.createBindingInfo();
-			newBindingInfo.setLeft(viewElement);
-			newBindingInfo.setRight(target);
-			bindingRegistry.getBindingInfos().add(newBindingInfo);
-			return newBindingInfo;
-		}
-		return null;
 	}
 
 	public Collection<BindingInfo> getCinematicBindingInfos(AbstractViewElement viewElement) {
@@ -137,25 +123,6 @@ public class CinematicBindingServices {
 			}
 		}
 		return bindingInfos;
-	}
-
-	public List<EObject> getBindingElementsAndContainers(EObject context, List<EObject> bindingElements) {
-		List<EObject> bindingElementsContainersAncestors = new ArrayList<EObject>(bindingElements);
-		// Add to the list, the Ancestors if they are not already
-		// on the list.
-		for (EObject bindingElement : bindingElements) {
-			EObject objectContainer = bindingElement.eContainer();
-			while (objectContainer != null) {
-				if (!bindingElementsContainersAncestors.contains(objectContainer)) {
-					bindingElementsContainersAncestors.add(objectContainer);
-				}
-				objectContainer = objectContainer.eContainer();
-			}
-		}
-		// Removing duplicates, if duplicates are present
-		Set<EObject> set = new HashSet<EObject>();
-		set.addAll(bindingElementsContainersAncestors);
-		return new ArrayList<EObject>(set);
 	}
 
 	private BindingRegistry getGlobalBindingRegistry(CinematicElement element) {
