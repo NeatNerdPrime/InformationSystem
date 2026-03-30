@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -187,6 +188,26 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 		return sequenceName;
 	}
 	
+	@Override
+	protected Column buildColumn(DatabaseMetaData metaData, TableContainer owner, NativeTypesLibrary nativeTypesLibrary, AbstractTable table, ResultSet rs) throws SQLException {
+		Column column = super.buildColumn(metaData, owner, nativeTypesLibrary, table, rs);
+		
+		// Do not set the default value for the *SERIAL types
+		Set<String> serialTypesNames = Set.of("SMALLSERIAL", "SERIAL", "BIGSERIAL");
+		if(serialTypesNames.contains(((TypeInstance)column.getType()).getNativeType().getName())) {
+			column.setDefaultValue("");
+		}
+		
+		// Remove the type of the textual value if present
+		final Pattern p = Pattern.compile("^('.*')::[^']*$");
+		Matcher matcher = p.matcher(column.getDefaultValue());
+		if(matcher.find()) {
+			column.setDefaultValue(matcher.group(1));
+		}
+		
+		return column;
+	}
+
 	@Override
 	protected void buildColumnConstraints(DatabaseMetaData metaData, TableContainer owner, Table table) {
 		ResultSet rs = null;

@@ -237,9 +237,9 @@ public class DefaultDataBaseBuilder extends AbstractDataBaseBuilder {
 		return null;
 	}
 	
-	protected void buildColumn(DatabaseMetaData metaData, TableContainer owner, NativeTypesLibrary nativeTypesLibrary, AbstractTable table, ResultSet rs) throws SQLException {
+	protected Column buildColumn(DatabaseMetaData metaData, TableContainer owner, NativeTypesLibrary nativeTypesLibrary, AbstractTable table, ResultSet rs) throws SQLException {
 		if (table instanceof View) {
-			return;
+			return null;
 		}
 		
 		String columnName = rs.getString(4);
@@ -260,13 +260,6 @@ public class DefaultDataBaseBuilder extends AbstractDataBaseBuilder {
 		String defaultValue = rs.getString(13);
 		if (defaultValue == null || defaultValue.length() == 0) {
 			defaultValue = "";
-		}
-		// Remove the type of the textual value if present
-		// Not sure this is specific to Postgres only but it shouldn't impact the other database types
-		final Pattern p = Pattern.compile("^('.*')::[^']*$");
-		Matcher matcher = p.matcher(defaultValue);
-		if(matcher.find()) {
-			defaultValue = matcher.group(1);
 		}
 
 		column.setDefaultValue(defaultValue.trim());
@@ -293,6 +286,8 @@ public class DefaultDataBaseBuilder extends AbstractDataBaseBuilder {
 		}
 
 		column.setNullable(isNullable);
+		
+		return column;
 	}
 
 	protected TypeInstance createTypeInstance(

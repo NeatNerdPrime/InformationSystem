@@ -75,6 +75,7 @@ public class ChangelogHandler extends AbstractHandler {
 						String.format(Messages.ChangelogHandler_success_message, getLiquibaseVersion()));
 			}
 		} catch (IOException | LiquibaseException e) {
+			System.err.println(e.getMessage());
 			MessageDialog.openError(shell, Messages.ChangelogHandler_dialog_title, e.getMessage());
 		}
 		
