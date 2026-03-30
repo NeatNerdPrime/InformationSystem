@@ -15,6 +15,9 @@
     },
     "version" : "3.0.0"
   },
+  "security" : [ {
+    "jwtToken" : [ ]
+  } ],
   "tags" : [ {
     "name" : "Series",
     "description" : "Information about a specific series"
@@ -95,10 +98,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/actors" : {
@@ -147,10 +147,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/episodes" : {
@@ -207,10 +204,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/episodes/query" : {
@@ -323,10 +317,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/episodes/query/params" : {
@@ -375,10 +366,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/episodes/summary" : {
@@ -427,10 +415,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/filter" : {
@@ -495,10 +480,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/filter/params" : {
@@ -555,10 +537,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/images" : {
@@ -615,10 +594,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/images/query" : {
@@ -699,10 +675,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/series/{id}/images/query/params" : {
@@ -764,10 +737,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/updated/query" : {
@@ -831,10 +801,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/updated/query/params" : {
@@ -873,10 +840,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/login" : {
@@ -914,10 +878,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/refresh_token" : {
@@ -946,10 +907,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/search/series" : {
@@ -1029,10 +987,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/search/series/params" : {
@@ -1061,10 +1016,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/episodes/{id}" : {
@@ -1121,10 +1073,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/languages" : {
@@ -1153,10 +1102,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/languages/{id}" : {
@@ -1204,10 +1150,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/movies/{id}" : {
@@ -1264,10 +1207,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/movieupdates" : {
@@ -1325,10 +1265,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user" : {
@@ -1367,10 +1304,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/favorites" : {
@@ -1409,10 +1343,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/favorites/{id}" : {
@@ -1471,10 +1402,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       },
       "delete" : {
         "tags" : [ "Users" ],
@@ -1531,10 +1459,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/ratings" : {
@@ -1573,10 +1498,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/ratings/query" : {
@@ -1624,10 +1546,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/ratings/query/params" : {
@@ -1666,10 +1585,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/ratings/{itemType}/{itemId}" : {
@@ -1726,10 +1642,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     },
     "/user/ratings/{itemType}/{itemId}/{itemRating}" : {
@@ -1795,10 +1708,7 @@
               }
             }
           }
-        },
-        "security" : [ {
-          "jwtToken" : [ ]
-        } ]
+        }
       }
     }
   },
