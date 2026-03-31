@@ -3,6 +3,7 @@
 	<topic href="doc/ISD - Environment tooling.html" label="ISD - Socle Obeo Designer"></topic>
 	<topic href="doc/ISD - Environment tooling.html#outillage_environnement" label="ISD - Outillage environnement">
 		<topic href="doc/ISD - Environment tooling.html#vues_partielles" label="Vues partielles"></topic>
+		<topic href="doc/ISD - Environment tooling.html#external_links" label="Lier des éléments d&apos;autres projets de modélisation"></topic>
 		<topic href="doc/ISD - Environment tooling.html#error_log" label="Vue error log"></topic>
 		<topic href="doc/ISD - Environment tooling.html#modele_environnement" label="Le modèle environnement">
 			<topic href="doc/ISD - Environment tooling.html#modeling_project_creation" label="Création d&apos;un projet modeling"></topic>
