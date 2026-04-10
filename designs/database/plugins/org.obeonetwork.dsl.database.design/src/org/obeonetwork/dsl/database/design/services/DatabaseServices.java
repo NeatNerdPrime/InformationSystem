@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.business.api.helper.SiriusUtil;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.AbstractDNode;
@@ -133,37 +134,55 @@ public class DatabaseServices {
 	}
 	
 	/**
-	 * Copy table from diagram to diagram and clean type of columns if they comes from
-	 * different database type.
-	 * 
-	 * @param tableContainer
-	 * @param copiedTable
+	 * Pastes the given {@code copiedTable} into the specified {@code tableContainer}.
+	 * <p>
+	 * If the copied table
+	 * originates from a different database vendor than the target container,
+	 * additional cleanup is applied to the {@code copiedTable} (which is modified in place):
+	 * <ul>
+	 * <li>Column native types are unset</li>
+	 * <li>Foreign keys are removed</li>
+	 * <li>Columns involved in foreign keys are deleted</li>
+	 * <li>Indexes involving columns that participate in foreign keys are deleted</li>
+	 * </ul>
+	 * </p>
+	 *
+	 * @param tableContainer the target container in which the table will be pasted
+	 * @param copiedTable    the table to paste (may be modified in-place)
 	 */
 	public void pasteTableToTableContainer(TableContainer tableContainer, Table copiedTable) {
-		databaseGenericCopy(tableContainer, copiedTable);
+		databaseGenericPaste(tableContainer, copiedTable);
 		if (isTableFromOtherDatabaseType(copiedTable,  tableContainer)) {
 			
-			//clean type of columns
+			// Clean columns types
 			for (Column column : (copiedTable).getColumns()) {
 				((TypeInstance) column.getType()).setNativeType(null);
 			}
 			
-			//remove indexes and associated columns that match with foreign key
-			List<Index> indexesToDelete = new ArrayList<>();
-			for (Index index : copiedTable.getIndexes()) {
-				if ( copiedTable.getForeignKeys().stream().map(NamedElement::getName)
-					.anyMatch(fkName -> fkName.equals(index.getName()))) {
-					copiedTable.getColumns().removeAll(index.getElements().stream().map(IndexElement::getColumn).toList());
-					indexesToDelete.add(index);
-				}
-			}
+			// Get the columns involved in foreign keys
+			List<Column> fkColumns = copiedTable.getForeignKeys().stream()
+			.map(ForeignKey::getElements).flatMap(List::stream)
+			.map(ForeignKeyElement::getFkColumn).toList();
+			
+			// Get the indexes involving columns involved in foreign keys
+			List<Index> indexesToDelete = copiedTable.getIndexes().stream()
+			.filter(index -> {
+				List<Column> indexColumns = new ArrayList<>(index.getElements().stream().map(IndexElement::getColumn).toList());
+				indexColumns.retainAll(fkColumns);
+				return !indexColumns.isEmpty();
+			}).toList();
+			
+			// Delete the indexes
 			copiedTable.getIndexes().removeAll(indexesToDelete);
 			
-			//clean all foreign keys
+			// Delete the foreign keys
 			copiedTable.getForeignKeys().clear();
+			
+			// Delete the foreign keys columns
+			EcoreUtil.deleteAll(fkColumns, true);
+			
 		}
 	}
-
 
 	/**
 	 * Add copiedElement into the first compatible containment feature of container.
@@ -171,7 +190,7 @@ public class DatabaseServices {
 	 * @param container
 	 * @param copiedElement
 	 */
-	private void databaseGenericCopy(DatabaseElement container, DatabaseElement copiedElement) {
+	private void databaseGenericPaste(DatabaseElement container, DatabaseElement copiedElement) {
 		EReference containementRef = container.eClass().getEAllStructuralFeatures().stream()
 				.filter(EReference.class::isInstance)
 				.map(EReference.class::cast)
@@ -191,7 +210,7 @@ public class DatabaseServices {
 	 * @param copiedColumn
 	 */
 	public void pasteColumnToTable(Table table, Column copiedColumn) {
-		databaseGenericCopy(table, copiedColumn);
+		databaseGenericPaste(table, copiedColumn);
 		if (isColumnFromOtherDatabaseType(copiedColumn, table)) {
 				((TypeInstance) copiedColumn.getType()).setNativeType(null);
 		}
