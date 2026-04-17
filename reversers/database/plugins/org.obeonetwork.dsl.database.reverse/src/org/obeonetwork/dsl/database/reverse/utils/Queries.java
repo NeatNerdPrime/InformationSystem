@@ -11,6 +11,7 @@
 package org.obeonetwork.dsl.database.reverse.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
@@ -27,6 +28,8 @@ public abstract class Queries {
 	}
 	
 	public abstract AbstractTable getTable(String tableName);
+	
+	public abstract List<AbstractTable> getAllTables();
 	
 	public abstract AbstractTable getTable(TableContainer owner, String tableName);
 	

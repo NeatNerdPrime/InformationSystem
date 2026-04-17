@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.obeonetwork.dsl.database.reverse.utils;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
 import org.obeonetwork.dsl.database.DataBase;
@@ -50,6 +53,14 @@ public class MultiDataBaseQueries extends Queries {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<AbstractTable> getAllTables() {
+		return Stream.concat(dataBases.stream().map(DataBase::getSchemas).flatMap(List::stream), dataBases.stream()) //
+		.map(TableContainer.class::cast) //
+		.map(TableContainer::getTables).flatMap(List::stream) //
+		.toList();
 	}
 
 }
