@@ -111,7 +111,7 @@ public class StateMachineServices {
     
     public String evaluateLabel(EObject context){
     	//['State_' + container.oclAsType(statemachine::StateMachine).states->filter(statemachine::State)->size()/]
-    	String label = "State_";
+    	String label = "State";
     	List<AbstractState> abstractStates = null;
     	if (context.eContainer() instanceof StateMachine){
     		abstractStates = ((StateMachine)context.eContainer()).getStates();    		
