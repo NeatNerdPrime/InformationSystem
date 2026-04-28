@@ -91,7 +91,7 @@ public class ColumnSpec extends ColumnImpl {
 			if (pk == null) {
 				// Create a new PK
 				pk = DatabaseFactory.eINSTANCE.createPrimaryKey();
-				pk.setName(table.getName() + "_PK");
+				pk.setName(table.getName().toUpperCase() + "_PK");
 				table.setPrimaryKey(pk);
 			}
 			
