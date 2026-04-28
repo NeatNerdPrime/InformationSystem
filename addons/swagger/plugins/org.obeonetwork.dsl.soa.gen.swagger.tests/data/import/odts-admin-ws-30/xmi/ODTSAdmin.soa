@@ -436,7 +436,7 @@
       </ownedInterface>
     </ownedServices>
     <securitySchemes xmi:id="_pIDgBixJEfGrZaexKXbNkA" technicalid="_pHv9YixJEfGrZaexKXbNkA" type="http" name="basicAuth"/>
-    <license xmi:id="_pIDgByxJEfGrZaexKXbNkA" technicalid="_pHuvQixJEfGrZaexKXbNkA" name="Copyright (c) 2008, 2025 Obeo." URL="/doc/license.html"/>
+    <license xmi:id="_pIDgByxJEfGrZaexKXbNkA" technicalid="_pHuvQixJEfGrZaexKXbNkA" name="Copyright (c) 2008, 2026 Obeo." URL="/doc/license.html"/>
     <information xmi:id="_pIDgCCxJEfGrZaexKXbNkA" technicalid="_pHuvQSxJEfGrZaexKXbNkA" apiVersion="1.0.0"/>
     <contact xmi:id="_pIDgCSxJEfGrZaexKXbNkA" technicalid="_pHuvQyxJEfGrZaexKXbNkA" email="support@obeo.fr"/>
     <servers xmi:id="_pIDgCixJEfGrZaexKXbNkA" technicalid="_pHv9YCxJEfGrZaexKXbNkA" description="Production server (use live data)" URL="/api/v1.0"/>
