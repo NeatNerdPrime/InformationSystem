@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,6 +78,36 @@ public class EnvironmentLabelServices extends EnvironmentSwitch<String> {
 		}
 		return label;
 	}
+	
+	/**
+	 * Computes the name of a new relation created between the given source and
+	 * target elements, based on the target element's name.<br>
+	 * Assumes a "many" multiplicity on the target side (appends an "s" to the name).<br>
+	 * Converts any leading sequence of uppercase characters in the target name to lowercase.<br>
+	 * Appends a numeric suffix when multiple relations already exist between the same source and target.<br>
+	 *
+	 * @param source the source element of the relation
+	 * @param target the target element of the relation
+	 * @return the computed relation name
+	 */
+	public String computeNewRelationName(StructuredType target, StructuredType source) {
+		char[] nameArray = target.getName().toCharArray();
+		int i = 0;
+		// Replace consecutive upper case with lower
+		while (i < nameArray.length && Character.isUpperCase(nameArray[i])) {
+			nameArray[i] = Character.toLowerCase(nameArray[i]);
+			i++;
+		}
+		String relationName = new String(nameArray).trim() + "s";
+		// search existing relations in source with the same target
+		int sizeRef = source.getOwnedReferences().stream().filter(ref -> target.equals(ref.getReferencedType()))
+				.toList().size();
+		if (sizeRef > 1) {
+			relationName += sizeRef;
+		}
+		return relationName;
+	}
+
 
 }
 

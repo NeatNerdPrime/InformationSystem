@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -388,9 +388,11 @@ public class CinematicServices {
 	public List<EObject> uiStructure(ViewContainer viewContainer) {
 		List<EObject>  result = new ArrayList<> ();
 		result.addAll(viewContainer.getViewContainers());
-		//result.addAll(viewContainer.getViewElements());
+		result.addAll(viewContainer.getViewElements());
 		result.addAll(viewContainer.getViewContainerReferences());
-
+		result.addAll(viewContainer.getEvents());
+		result.addAll(viewContainer.getActions());
+		result.addAll(bindingService.getCinematicBindingInfos(viewContainer));
 		
 		return result;
 	}

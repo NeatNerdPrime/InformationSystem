@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,6 +75,7 @@ public class ChangelogHandler extends AbstractHandler {
 						String.format(Messages.ChangelogHandler_success_message, getLiquibaseVersion()));
 			}
 		} catch (IOException | LiquibaseException e) {
+			System.err.println(e.getMessage());
 			MessageDialog.openError(shell, Messages.ChangelogHandler_dialog_title, e.getMessage());
 		}
 		

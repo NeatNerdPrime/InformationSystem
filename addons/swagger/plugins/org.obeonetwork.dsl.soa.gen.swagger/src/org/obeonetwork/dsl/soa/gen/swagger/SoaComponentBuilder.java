@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -248,7 +248,7 @@ public class SoaComponentBuilder {
 		inlineTypes = new HashMap<>();
 
 		buildSoaSecuritySchemes();
-
+		
 		buildSoaExposedTypes();
 
 		buildSoaServices();
@@ -821,6 +821,16 @@ public class SoaComponentBuilder {
 		}
 	}
 
+	/**
+	 * Create soa operation from swagger service
+	 * 
+	 * @param path
+	 * @param swgVerb
+	 * @param swgOperation
+	 * @param debugPath
+	 * @param globalSecuritySchemes - global security scheme apply on the whole swagger
+	 * @return the created operation
+	 */
 	private org.obeonetwork.dsl.soa.Operation createSoaOperation(String path, HttpMethod swgVerb, Operation swgOperation, List<String> debugPath) {
 		Service soaService = getSoaServiceFromPath(path);
 		Interface soaInterface = getOrCreateInterface(soaService);
@@ -884,27 +894,34 @@ public class SoaComponentBuilder {
 			}
 		}
 
-		if (swgOperation.getSecurity() != null) {
-			for (SecurityRequirement swgSecurityRequirement : swgOperation.getSecurity()) {
+		final List<SecurityRequirement> swgOperationSecurity = swgOperation.getSecurity();
+		final List<SecurityRequirement> swgGlobalSecurity = openApi.getSecurity();
+		Set<SecurityRequirement> swgAllSecurities = new HashSet<>();
+		if (swgOperationSecurity != null) {
+			swgAllSecurities.addAll(swgOperationSecurity);
+		}
+		if (swgGlobalSecurity != null) {
+			swgAllSecurities.addAll(swgGlobalSecurity);
+		}
+		for (SecurityRequirement swgSecurityRequirement : swgAllSecurities) {
 
-				if (!swgSecurityRequirement.keySet().isEmpty()) {
-					String ssKey = swgSecurityRequirement.keySet().iterator().next();
+			if (!swgSecurityRequirement.keySet().isEmpty()) {
+				String ssKey = swgSecurityRequirement.keySet().iterator().next();
 
-					for (org.obeonetwork.dsl.soa.SecurityScheme securityScheme : soaComponent.getSecuritySchemes().stream()//
-							.filter(ss -> ssKey.equals(ss.getName()))//
-							.collect(toList())) {
-						SecurityApplication soaSecurityApplication = SoaFactory.eINSTANCE.createSecurityApplication();
-						soaSecurityApplication.setSecurityScheme(securityScheme);
-						soaOperation.getSecurityApplications().add(soaSecurityApplication);
+				for (org.obeonetwork.dsl.soa.SecurityScheme securityScheme : soaComponent.getSecuritySchemes().stream()//
+						.filter(ss -> ssKey.equals(ss.getName()))//
+						.toList()) {
+					SecurityApplication soaSecurityApplication = SoaFactory.eINSTANCE.createSecurityApplication();
+					soaSecurityApplication.setSecurityScheme(securityScheme);
+					soaOperation.getSecurityApplications().add(soaSecurityApplication);
 
-						List<String> scopeNames = swgSecurityRequirement.get(ssKey);
-						if (scopeNames != null) {
-							for (String scopeName : scopeNames) {
-								List<Scope> soaScopes = securityScheme.getFlows().stream()//
-										.flatMap(f -> f.getScopes().stream()).filter(s -> s.getName().equals(scopeName))//
-										.collect(toList());
-								soaSecurityApplication.getScopes().addAll(soaScopes);
-							}
+					List<String> scopeNames = swgSecurityRequirement.get(ssKey);
+					if (scopeNames != null) {
+						for (String scopeName : scopeNames) {
+							List<Scope> soaScopes = securityScheme.getFlows().stream()//
+									.flatMap(f -> f.getScopes().stream()).filter(s -> s.getName().equals(scopeName))//
+									.collect(toList());
+							soaSecurityApplication.getScopes().addAll(soaScopes);
 						}
 					}
 				}

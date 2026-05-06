@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
 import org.obeonetwork.dsl.database.Constraint;
+import org.obeonetwork.dsl.database.PrimaryKey;
 import org.obeonetwork.dsl.database.Sequence;
 import org.obeonetwork.dsl.database.Table;
 import org.obeonetwork.dsl.database.TableContainer;
@@ -93,7 +95,7 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 	private void buildSequences(TableContainer tableContainer) {
 		
 		// Parse the default values of all the columns to identify the links between columns and sequences
-		Map<String, List<Column>> linkedSequenceColumns = new HashMap();
+		Map<String, List<Column>> linkedByDefaultValueSequenceColumns = new HashMap();
 		
 		tableContainer.getTables().stream()
 		.filter(Table.class::isInstance)
@@ -101,10 +103,10 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 		.forEach(c -> {
 			String sequenceName = getSequenceNameFromDefaultValue(c);
 			if(sequenceName != null) {
-				List<Column> linkedColumns = linkedSequenceColumns.get(sequenceName);
+				List<Column> linkedColumns = linkedByDefaultValueSequenceColumns.get(sequenceName);
 				if(linkedColumns == null) {
 					linkedColumns = new ArrayList<>();
-					linkedSequenceColumns.put(sequenceName, linkedColumns);
+					linkedByDefaultValueSequenceColumns.put(sequenceName, linkedColumns);
 				}
 				linkedColumns.add(c);
 			}
@@ -143,15 +145,22 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 				sequence.setComments(comment);
 				// Look for a table that could correspond to the sequence based on its name
 				if (sequenceName.endsWith("_seq")) {
-					String tableName = sequenceName.substring(0, sequenceName.length() - "_seq".length());
-					AbstractTable abstractTable = queries.getTable(tableName);
-					if (abstractTable != null && abstractTable instanceof Table) {
-						Table table = (Table) abstractTable;
-						if (table.getPrimaryKey() != null && table.getPrimaryKey().getColumns().size() == 1) {
-							Column column = table.getPrimaryKey().getColumns().get(0);
-							column.setSequence(sequence);
+					queries.getAllTables().stream().filter(Table.class::isInstance).map(Table.class::cast) //
+					.map(Table::getPrimaryKey).map(PrimaryKey::getColumns).flatMap(List::stream) //
+					.forEach(pkColumn -> {
+						Table table = pkColumn.getOwner();
+						if(sequenceName.equalsIgnoreCase(table.getName() + "_seq") || 
+								sequenceName.equalsIgnoreCase(table.getName() + "_" + pkColumn.getName() + "_seq")) {
+							pkColumn.setSequence(sequence);
 						}
-					}
+					});
+				}
+				
+				// Link the columns referencing the sequence in their default value to the sequence
+				if(linkedByDefaultValueSequenceColumns.get(sequenceName) != null) {
+					linkedByDefaultValueSequenceColumns.get(sequenceName).forEach(column -> {
+						column.setSequence(sequence);
+					});
 				}
 				// Link the columns referencing the sequence in their default value to the sequence
 				if(linkedSequenceColumns.get(sequenceName) != null) {
@@ -187,6 +196,26 @@ public class PostGresDataBaseBuilder extends DefaultDataBaseBuilder {
 		return sequenceName;
 	}
 	
+	@Override
+	protected Column buildColumn(DatabaseMetaData metaData, TableContainer owner, NativeTypesLibrary nativeTypesLibrary, AbstractTable table, ResultSet rs) throws SQLException {
+		Column column = super.buildColumn(metaData, owner, nativeTypesLibrary, table, rs);
+		
+		// Do not set the default value for the *SERIAL types
+		Set<String> serialTypesNames = Set.of("SMALLSERIAL", "SERIAL", "BIGSERIAL");
+		if(serialTypesNames.contains(((TypeInstance)column.getType()).getNativeType().getName())) {
+			column.setDefaultValue("");
+		}
+		
+		// Remove the type of the textual value if present
+		final Pattern p = Pattern.compile("^('.*')::[^']*$");
+		Matcher matcher = p.matcher(column.getDefaultValue());
+		if(matcher.find()) {
+			column.setDefaultValue(matcher.group(1));
+		}
+		
+		return column;
+	}
+
 	@Override
 	protected void buildColumnConstraints(DatabaseMetaData metaData, TableContainer owner, Table table) {
 		ResultSet rs = null;

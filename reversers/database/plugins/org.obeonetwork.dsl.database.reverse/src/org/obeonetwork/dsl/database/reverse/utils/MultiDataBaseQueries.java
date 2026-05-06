@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.obeonetwork.dsl.database.reverse.utils;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
@@ -50,6 +53,14 @@ public class MultiDataBaseQueries extends Queries {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<AbstractTable> getAllTables() {
+		return Stream.concat(dataBases.stream().map(DataBase::getSchemas).flatMap(List::stream), dataBases.stream()) //
+		.map(TableContainer.class::cast) //
+		.map(TableContainer::getTables).flatMap(List::stream) //
+		.toList();
 	}
 
 }

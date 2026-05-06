@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,7 +111,7 @@ public class StateMachineServices {
     
     public String evaluateLabel(EObject context){
     	//['State_' + container.oclAsType(statemachine::StateMachine).states->filter(statemachine::State)->size()/]
-    	String label = "State_";
+    	String label = "State";
     	List<AbstractState> abstractStates = null;
     	if (context.eContainer() instanceof StateMachine){
     		abstractStates = ((StateMachine)context.eContainer()).getStates();    		

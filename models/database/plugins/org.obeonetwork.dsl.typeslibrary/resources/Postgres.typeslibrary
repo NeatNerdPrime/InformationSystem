@@ -9,6 +9,9 @@
   <nativeTypes xmi:id="_S3MhgG5GEeS0qO0NdvQESw" technicalid="_FO09VJn4EeaqGJZ6nXNZAQ" name="BIGINT">
     <mapsTo href="pathmap://LogicalDBTypes#_WWeJ4hEnEeGTa_JlZYBw1A"/>
   </nativeTypes>
+  <nativeTypes xmi:id="_Wi1LUCnFEfG9cPNti5l34g" technicalid="_WPhNwCnFEfG9cPNti5l34g" name="BIGSERIAL">
+    <mapsTo href="pathmap://LogicalDBTypes#_WWeJ4hEnEeGTa_JlZYBw1A"/>
+  </nativeTypes>
   <nativeTypes xmi:id="_iBb3cGTMEeSmq67_vSAzgg" technicalid="_FO09Vpn4EeaqGJZ6nXNZAQ" name="BOOL">
     <mapsTo href="pathmap://LogicalDBTypes#_WWew8xEnEeGTa_JlZYBw1A"/>
   </nativeTypes>
@@ -76,8 +79,13 @@
   <nativeTypes xmi:id="_TaSLAG5HEeS0qO0NdvQESw" technicalid="_FO09hJn4EeaqGJZ6nXNZAQ" name="REAL">
     <mapsTo href="pathmap://LogicalDBTypes#_WWeJ5hEnEeGTa_JlZYBw1A"/>
   </nativeTypes>
-  <nativeTypes xmi:id="_Vvu_0GTNEeSmq67_vSAzgg" technicalid="_FO09hpn4EeaqGJZ6nXNZAQ" name="SERIAL"/>
+  <nativeTypes xmi:id="_Vvu_0GTNEeSmq67_vSAzgg" technicalid="_FO09hpn4EeaqGJZ6nXNZAQ" name="SERIAL">
+    <mapsTo href="pathmap://LogicalDBTypes#_WWeJ4BEnEeGTa_JlZYBw1A"/>
+  </nativeTypes>
   <nativeTypes xmi:id="_dhx_cG5HEeS0qO0NdvQESw" technicalid="_FO09h5n4EeaqGJZ6nXNZAQ" name="SMALLINT">
+    <mapsTo href="pathmap://LogicalDBTypes#_WWeJ4BEnEeGTa_JlZYBw1A"/>
+  </nativeTypes>
+  <nativeTypes xmi:id="_WCKuQCnFEfG9cPNti5l34g" technicalid="_VnOesCnFEfG9cPNti5l34g" name="SMALLSERIAL">
     <mapsTo href="pathmap://LogicalDBTypes#_WWeJ4BEnEeGTa_JlZYBw1A"/>
   </nativeTypes>
   <nativeTypes xmi:id="_X2UR0GTNEeSmq67_vSAzgg" technicalid="_FO09iZn4EeaqGJZ6nXNZAQ" name="TEXT">

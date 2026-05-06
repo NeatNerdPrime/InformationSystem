@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<p>
-			<i>Copyright &#169; 2008, 2025 Obeo -  All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v2.0</i>
+			<i>Copyright &#169; 2008, 2026 Obeo -  All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v2.0</i>
 		</p>
 		<h1 id="obeo_designer">ISD &#8211; Socle Obeo Designer</h1>
 		<p>IS-Designer est un studio de conception de systèmes logiciels permettant de capturer le besoin et de décrire l&#8217;architecture de systèmes logiciels.</p>
@@ -76,6 +76,28 @@
 				<em>Edit &gt; Paste layout</em>.
 			</li>
 		</ul>
+		<h2 id="external_links">Lier des éléments d&#8217;autres projets de modélisation</h2>
+		<p>De manière générale, la gestion des dépendances entre librairies de modélisation doit se faire via la fonctionnalité dédiée, décrite au chapitre 
+			<a href="../../org.obeonetwork.tools.projectlibrary.doc/doc/ISD%20-%20Using%20modeling%20projects%20as%20libraries.html">ISD &#8211; Using modeling projects as libraries</a>.
+		</p>
+		<p>Bien que cette pratique ne soit pas le mode d’utilisation recommandé, il est néanmoins possible d’utiliser les capacités du socle Eclipse Modeling Framework permettant de créer des liens entre projets.</p>
+		<p>Pour ce faire, il est nécessaire de déclarer la dépendance depuis le projet racine via l’action &#171;Add Model&#187; du menu contextuel des dépendances du projet :</p>
+		<p>
+			<img border="0" src="./pics/ExtLink_AddModelMenu.png"/>
+		</p>
+		<p>Puis de sélectionner la ressource du workspace à lier :</p>
+		<p>
+			<img border="0" src="./pics/ExtLink_SelectResourceDialog.png"/>
+		</p>
+		<p>Une fois la dépendance déclarée, les outils de la palette de type &#171;Add External Element&#187; peuvent être utilisés pour ajouter des éléments du projet en dépendance :</p>
+		<p>
+			<img border="0" src="./pics/ExtLink_AddExternalElementTool.png"/>
+		</p>
+		<p>Pour peupler manuellement une vue partielle avec des éléments externes au projet courant par glisser-déposer depuis l’explorateur de modèles, il est nécessaire de sélectionner les éléments sous le nœud &#171;Project Dependencies&#187; du projet courant :</p>
+		<p>
+			<img border="0" src="./pics/ExtLink_DropOnPartialView.png"/>
+		</p>
+		<p>Un glisser-déposer effectué directement depuis le projet lié ne permet pas de peupler le diagramme.</p>
 		<h2 id="error_log">Vue error log</h2>
 		<p>Certaines fonctionnalités du studio peuvent sous certaines conditions signaler à l&#8217;utilisateur qu&#8217;il peut consulter la vue 
 			<strong>Error Log</strong> pour obtenir plus de détail. Cette vue peut être ouverte via le menu &#171;Window &gt; Show View &gt; Error Log&#187;.

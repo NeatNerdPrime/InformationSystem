@@ -45,6 +45,8 @@ info:
   contact: {name: obeo, url: 'https://contact.obeosoft.com/', email: contact@obeosoft.com}
   license: {name: Apache 2.0, url: 'http://www.apache.org/licenses/LICENSE-2.0.html'}
   version: 3.0.0
+security:
+- jwtToken: []
 tags:
 - {name: Series, description: Information about a specific series}
 - {name: Updates, description: Series that have been recently updated.}
@@ -99,8 +101,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/actors:
     get:
       tags: [Series]
@@ -137,8 +137,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/episodes:
     get:
       tags: [Series]
@@ -181,8 +179,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/episodes/query:
     get:
       tags: [Series]
@@ -262,8 +258,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/episodes/query/params:
     get:
       tags: [Series]
@@ -301,8 +295,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/episodes/summary:
     get:
       tags: [Series]
@@ -342,8 +334,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/filter:
     get:
       tags: [Series]
@@ -394,8 +384,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/filter/params:
     get:
       tags: [Series]
@@ -440,8 +428,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/images:
     get:
       tags: [Series]
@@ -485,8 +471,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/images/query:
     get:
       tags: [Series]
@@ -547,8 +531,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /series/{id}/images/query/params:
     get:
       tags: [Series]
@@ -594,8 +576,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /updated/query:
     get:
       tags: [Updates]
@@ -648,8 +628,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /updated/query/params:
     get:
       tags: [Updates]
@@ -681,8 +659,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /login:
     post:
       tags: [Authentication]
@@ -711,8 +687,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotAuthorized'}
-      security:
-      - jwtToken: []
   /refresh_token:
     get:
       tags: [Authentication]
@@ -737,8 +711,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotAuthorized'}
-      security:
-      - jwtToken: []
   /search/series:
     get:
       tags: [Search]
@@ -797,8 +769,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /search/series/params:
     get:
       tags: [Search]
@@ -822,8 +792,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotAuthorized'}
-      security:
-      - jwtToken: []
   /episodes/{id}:
     get:
       tags: [Episodes]
@@ -869,8 +837,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /languages:
     get:
       tags: [Languages]
@@ -894,8 +860,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotAuthorized'}
-      security:
-      - jwtToken: []
   /languages/{id}:
     get:
       tags: [Languages]
@@ -932,8 +896,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /movies/{id}:
     get:
       tags: [Movies]
@@ -978,8 +940,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /movieupdates:
     get:
       tags: [Movies]
@@ -1024,8 +984,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/InvalidQueryParams'}
-      security:
-      - jwtToken: []
   /user:
     get:
       tags: [Users]
@@ -1056,8 +1014,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /user/favorites:
     get:
       tags: [Users]
@@ -1089,8 +1045,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /user/favorites/{id}:
     put:
       tags: [Users]
@@ -1136,8 +1090,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/Conflict'}
-      security:
-      - jwtToken: []
     delete:
       tags: [Users]
       description: Deletes the given series ID from the user’s favorite’s list and
@@ -1182,8 +1134,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/Conflict'}
-      security:
-      - jwtToken: []
   /user/ratings:
     get:
       tags: [Users]
@@ -1214,8 +1164,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /user/ratings/query:
     get:
       tags: [Users]
@@ -1252,8 +1200,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /user/ratings/query/params:
     get:
       tags: [Users]
@@ -1285,8 +1231,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /user/ratings/{itemType}/{itemId}:
     delete:
       tags: [Users]
@@ -1328,8 +1272,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
   /user/ratings/{itemType}/{itemId}/{itemRating}:
     put:
       tags: [Users]
@@ -1376,8 +1318,6 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/NotFound'}
-      security:
-      - jwtToken: []
 components:
   schemas:
     Auth:

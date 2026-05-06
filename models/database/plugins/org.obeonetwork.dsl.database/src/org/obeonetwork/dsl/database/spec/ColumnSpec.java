@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public class ColumnSpec extends ColumnImpl {
 			if (pk == null) {
 				// Create a new PK
 				pk = DatabaseFactory.eINSTANCE.createPrimaryKey();
-				pk.setName(table.getName() + "_PK");
+				pk.setName(table.getName().toUpperCase() + "_PK");
 				table.setPrimaryKey(pk);
 			}
 			

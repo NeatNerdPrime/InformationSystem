@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.obeonetwork.dsl.database.reverse.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
@@ -27,6 +28,8 @@ public abstract class Queries {
 	}
 	
 	public abstract AbstractTable getTable(String tableName);
+	
+	public abstract List<AbstractTable> getAllTables();
 	
 	public abstract AbstractTable getTable(TableContainer owner, String tableName);
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Obeo.
+ * Copyright (c) 2008, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class SQLServerDataBaseBuilder extends DefaultDataBaseBuilder {
 	}
 	
 	@Override
-	protected void buildColumn(DatabaseMetaData metaData, TableContainer owner, NativeTypesLibrary nativeTypesLibrary, AbstractTable table, ResultSet rs) throws SQLException {
+	protected Column buildColumn(DatabaseMetaData metaData, TableContainer owner, NativeTypesLibrary nativeTypesLibrary, AbstractTable table, ResultSet rs) throws SQLException {
 		String columnName = rs.getString(4);
 		Column column = CreationUtils.createColumn(table, columnName);
 
@@ -108,6 +108,8 @@ public class SQLServerDataBaseBuilder extends DefaultDataBaseBuilder {
 		}
 
 		column.setNullable(isNullable);
+		
+		return column;
 	}
 	
 	@Override
